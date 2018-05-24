@@ -11,6 +11,8 @@ h = 480
 while(cap.isOpened()):
 	ret, frame = cap.read()
 	frame = cv2.flip(frame, 1)
+	# frame = cv2.imread('image6.jpg')
+	# ret = True
 	if ret==True:
 	
 		#downsample
@@ -34,8 +36,8 @@ while(cap.isOpened()):
 		#draw square
 		for (x,y,w,h) in detected:
 			cv2.rectangle(frame, (x,y), ((x+w),(y+h)), (0,0,255),1) 
-			cv2.line(frame, (x,y), ((x+w,y+h)), (0,0,255),1)
-			cv2.line(frame, (x+w,y), ((x,y+h)), (0,0,255),1)
+			# cv2.line(frame, (x,y), ((x+w,y+h)), (0,0,255),1)
+			# cv2.line(frame, (x+w,y), ((x,y+h)), (0,0,255),1)
 			pupilFrame = cv2.equalizeHist(frame[(int(y)+int(h*.25)):(y+h), x:(x+w)])
 			pupilO = pupilFrame
 			ret, pupilFrame = cv2.threshold(pupilFrame,55,255,cv2.THRESH_BINARY)        #50 ..nothin 70 is better
@@ -62,8 +64,11 @@ while(cap.isOpened()):
 				for cnt in contours:
 					area = cv2.contourArea(cnt)
 					center = cv2.moments(cnt)
-					cx,cy = int(center['m10']/center['m00']), int(center['m01']/center['m00'])
-					distanceX.append(cx)    
+					try:
+						cx,cy = int(center['m10']/center['m00']), int(center['m01']/center['m00'])
+						distanceX.append(cx)
+					except:
+						continue    
 					if area > maxArea:
 						maxArea = area
 						MAindex = currentIndex
@@ -93,12 +98,12 @@ while(cap.isOpened()):
 			if len(largeBlob) > 0:  
 				center = cv2.moments(largeBlob)
 				cx,cy = int(center['m10']/center['m00']), int(center['m01']/center['m00'])
-				cv2.circle(pupilO,(cx,cy),5,255,-1)
+				cv2.circle(pupilO,(cx,cy),2,255,-1)
 
 	
 		#show picture
 		cv2.imshow('frame',pupilO)
-		# cv2.imshow('frame2',pupilFrame)
+		cv2.imshow('frame2',pupilFrame)
 		if cv2.waitKey(1) & 0xFF == ord('q'):
 			break
 	

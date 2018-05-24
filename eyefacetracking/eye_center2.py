@@ -8,9 +8,9 @@ eye_cascade = cv2.CascadeClassifier('haarcascade_eye.xml')
 cap = cv2.VideoCapture(0)
 
 while 1:
-    # ret, img = cap.read()
-    # img = cv2.flip(img, 1)
-    img = cv2.imread('image6.jpg')
+    ret, img = cap.read()
+    img = cv2.flip(img, 1)
+    # img = cv2.imread('image6.jpg')
 
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     # laplacian = cv2.Laplacian(gray, cv2.CV_64F)
@@ -31,7 +31,7 @@ while 1:
                 cv2.circle(roi_color2,(i[0],i[1]),i[2],(255,255,255),2)
                 print("drawing circle")
                 # draw the center of the circle
-                cv2.circle(roi_color2,(i[0],i[1]),2,(255,255,255),3)
+                cv2.circle(roi_color2,(i[0],i[1]),3,(255,255,255),3)
         except Exception as e:
             pass
     cv2.imshow('img',img)
