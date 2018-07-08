@@ -98,15 +98,15 @@ def main():
 					
 					# print(type(ex), type(ey))
 					cv2.circle(frame, (ex, ey), 3, (255, 255, 255), 2)
-					if(len(l)<10):
+					if(len(l)<30):
 						l.append([ex, ey])
-					if (len(l)==10):
+					if (len(l)==30):
 						l.append([ex, ey])
 						avg_x, avg_y=average(l)
-					if(len(l)>10):
+					if(len(l)>30):
 						diff = [ex-avg_x, ey-avg_y]
 						print(diff)
-						if(abs(diff[0])+abs(diff[1])>30):
+						if(abs(diff[0])+abs(diff[1])>100):
 							l=[]
 						cv2.line(frame, (ex, ey), (avg_x, avg_y), (255, 255, 255), 2)
 				cv2.imshow('frame', frame)
