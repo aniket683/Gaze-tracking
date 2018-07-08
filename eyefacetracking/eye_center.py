@@ -31,7 +31,7 @@ def average(q):
 	return [ax//len(q), ay//len(q)]
 
 def main():
-	cap = cv2.VideoCapture(1)
+	cap = cv2.VideoCapture(0)
 	q = deque()
 	l = []
 	avg_x = 0
@@ -101,6 +101,7 @@ def main():
 					if(len(l)<10):
 						l.append([ex, ey])
 					if (len(l)==10):
+						l.append([ex, ey])
 						avg_x, avg_y=average(l)
 					if(len(l)>10):
 						diff = [ex-avg_x, ey-avg_y]
