@@ -1,16 +1,23 @@
 import cv2
+import urllib.request
 import numpy as np 
 import time
 
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 eye_cascade = cv2.CascadeClassifier('haarcascade_eye.xml')
 
-
+url = "http://10.184.50.206:4747/video"
 cap = cv2.VideoCapture(0)
 
 while True:
-	ret, img = cap.read()
+	with urllib.request.urlopen("http://10.184.57.17:4747/cam/1/frame.jpg") as url:
+		s = url.read()
+		# print (s)
+	imgNp=np.array(bytearray(s),dtype=np.uint8)
+	img=cv2.imdecode(imgNp,-1)
+	# ret, img = cap.read()
 	gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+	# print (gray)
 	faces = face_cascade.detectMultiScale(gray, 1.3, 5)
 	print(len(faces))
 	for (x,y,w,h) in faces:

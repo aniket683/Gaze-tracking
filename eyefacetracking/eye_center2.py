@@ -1,14 +1,18 @@
 import numpy as np
 import cv2
+import urllib.request
 
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 eye_cascade = cv2.CascadeClassifier('haarcascade_eye.xml')
 
 #number signifies camera
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 
 while 1:
-    ret, img = cap.read()
+    with urllib.request.urlopen("http://10.184.57.17:4747/cam/1/frame.jpg") as url:
+        s = url.read()
+    imgNp=np.array(bytearray(s),dtype=np.uint8)
+    img=cv2.imdecode(imgNp,-1)
     img = cv2.flip(img, 1)
     # img = cv2.imread('image6.jpg')
 

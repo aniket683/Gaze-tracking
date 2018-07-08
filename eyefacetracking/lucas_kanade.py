@@ -1,5 +1,6 @@
 import numpy as np
 import cv2, time
+import urllib.request
 cap = cv2.VideoCapture(0)
 
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
@@ -22,7 +23,10 @@ color = np.random.randint(0,255,(100,3))
 
 while True:
     curr = time.time()
-    ret, old_frame = cap.read()
+    with urllib.request.urlopen("http://10.184.57.17:4747/cam/1/frame.jpg") as url:
+        s = url.read()
+    imgNp=np.array(bytearray(s),dtype=np.uint8)
+    old_frame=cv2.imdecode(imgNp,-1)
     gray = cv2.cvtColor(old_frame, cv2.COLOR_BGR2GRAY)
     faces = face_cascade.detectMultiScale(gray, 1.3, 5)
     if len(faces)>0:
@@ -46,7 +50,10 @@ print (p0)
 
 mask = np.zeros_like(old_frame)
 while(1):
-    ret,frame = cap.read()
+    with urllib.request.urlopen("http://10.184.57.17:4747/cam/1/frame.jpg") as url:
+        s = url.read()
+    imgNp=np.array(bytearray(s),dtype=np.uint8)
+    frame=cv2.imdecode(imgNp,-1)
     frame = cv2.flip(frame, 1)
     frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     # calculate optical flow
